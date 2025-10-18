@@ -1,0 +1,63 @@
+/* Problem Def:  Design a system that sends different types of notifications (Email, SMS, Push).
+Each notification type has its own way of formatting and sending messages. The system should be able to handle all types uniformly while allowing each to define its specific behavior.
+Abstract class Notification with abstract method send(String to, String msg) and normal method getType() (Returns type of notification, eg. email, msg etc)
+Derived class: EmailNotification, SMSNotification, PushNotification simulate the diff type of notifications with send(String to, String msg)
+implement the class NotificationService with method notifyUser(Notification notification, String to, String msg). Accepts any notification type and calls send method */
+
+// Abstract class Notification
+abstract class Notification {
+    // Abstract method
+    abstract void send(String to, String msg);
+
+    // Normal method
+    String getType() {
+        return this.getClass().getSimpleName();  // returns class name like EmailNotification
+    }
+}
+
+// Derived class: Email
+class EmailNotification extends Notification {
+    @Override
+    void send(String to, String msg) {
+        System.out.println("Sending EMAIL to " + to + ": " + msg);
+    }
+}
+
+// Derived class: SMS
+class SMSNotification extends Notification {
+    @Override
+    void send(String to, String msg) {
+        System.out.println("Sending SMS to " + to + ": " + msg);
+    }
+}
+
+// Derived class: Push Notification
+class PushNotification extends Notification {
+    @Override
+    void send(String to, String msg) {
+        System.out.println("Sending PUSH Notification to " + to + ": " + msg);
+    }
+}
+
+// Service class
+class NotificationService {
+    void notifyUser(Notification notification, String to, String msg) {
+        System.out.println("Notification Type: " + notification.getType());
+        notification.send(to, msg);
+    }
+}
+
+// Main class to test
+public class Main {
+    public static void main(String[] args) {
+        NotificationService service = new NotificationService();
+
+        Notification email = new EmailNotification();
+        Notification sms = new SMSNotification();
+        Notification push = new PushNotification();
+
+        service.notifyUser(email, "user@example.com", "Hello via Email!");
+        service.notifyUser(sms, "9876543210", "Hello via SMS!");
+        service.notifyUser(push, "User123", "Hello via Push Notification!");
+    }
+}
